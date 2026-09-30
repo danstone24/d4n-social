@@ -1,0 +1,63 @@
+# XcodeGen spec. Regenerate the .xcodeproj with `xcodegen generate` from ios/.
+# The generated project is git-ignored; this file is the source of truth.
+name: D4NSocial
+options:
+  bundleIdPrefix: uk.d4n
+  deploymentTarget:
+    iOS: "18.0"
+  xcodeVersion: "26.0"
+  createIntermediateGroups: true
+settings:
+  base:
+    DEVELOPMENT_TEAM: FFT4Y887VQ
+    SWIFT_VERSION: "5.0"
+    MARKETING_VERSION: "0.1.0"
+    CURRENT_PROJECT_VERSION: 1
+    SWIFT_STRICT_CONCURRENCY: minimal
+targets:
+  D4NSocial:
+    type: application
+    platform: iOS
+    deploymentTarget: "18.0"
+    sources:
+      - path: D4NSocial
+        excludes:
+          - Rules
+      # Folder reference: the rule files keep their names and land in
+      # D4NSocial.app/Rules/, the same layout RulesStore fetches from GitHub.
+      - path: D4NSocial/Rules
+        type: folder
+    scheme:
+      testTargets:
+        - D4NSocialTests
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: uk.d4n.social
+        PRODUCT_NAME: D4NSocial
+        CODE_SIGN_STYLE: Automatic
+        TARGETED_DEVICE_FAMILY: "1"
+        SUPPORTS_MACCATALYST: false
+        ENABLE_USER_SCRIPT_SANDBOXING: true
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        GENERATE_INFOPLIST_FILE: true
+    info:
+      path: D4NSocial/Info.plist
+      properties:
+        CFBundleDisplayName: D4N Social
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+        UILaunchScreen: {}
+        UISupportedInterfaceOrientations:
+          - UIInterfaceOrientationPortrait
+        ITSAppUsesNonExemptEncryption: false
+        LSApplicationCategoryType: public.app-category.social-networking
+  D4NSocialTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - path: D4NSocialTests
+    dependencies:
+      - target: D4NSocial
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: true

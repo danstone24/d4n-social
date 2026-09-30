@@ -1,0 +1,135 @@
+/* d4n-social rules: instagram (cleanser.css) */
+/* Hiding rules, each gated on a data-tc-* flag on <html> that
+   instagram.content.js sets from the settings. Marked elements come from the
+   script; static selectors (hrefs) are handled here directly. Every rule
+   carries :not([data-tc-auditmode]) so audit mode can dim and label instead. */
+
+/* Reels: bottom-bar tab (and its wrapper when the link is all it holds), the
+   profile Reels tab, and Reels carousels in the home feed. Single /reel/<id>/
+   links shared in DMs stay. */
+html[data-tc-ighidereels]:not([data-tc-auditmode]) a[href="/reels/"],
+html[data-tc-ighidereels]:not([data-tc-auditmode]) :is(div, li, span):has(> a[href="/reels/"]:only-child),
+html[data-tc-ighidereels]:not([data-tc-auditmode]) a[href$="/reels/"],
+html[data-tc-ighidereels]:not([data-tc-auditmode]) [data-tc-reelsmodule] {
+  display: none !important;
+}
+
+/* Explore: the grid tiles on the explore and search pages, and "see all"
+   suggested people. The search field stays. */
+html[data-tc-ighideexplore][data-tc-route="explore"]:not([data-tc-auditmode]) main a[href^="/p/"],
+html[data-tc-ighideexplore][data-tc-route="explore"]:not([data-tc-auditmode]) main a[href^="/reel/"],
+html[data-tc-ighideexplore][data-tc-route="search"]:not([data-tc-auditmode]) main a[href^="/p/"],
+html[data-tc-ighideexplore][data-tc-route="search"]:not([data-tc-auditmode]) main a[href^="/reel/"],
+html[data-tc-ighideexplore]:not([data-tc-auditmode]) a[href^="/explore/people"] {
+  display: none !important;
+}
+
+/* Posts from accounts you don't follow, and the "Suggested posts" heading */
+html[data-tc-ighidesuggestedposts]:not([data-tc-auditmode]) [data-tc-suggested] {
+  display: none !important;
+}
+
+/* Sponsored posts */
+html[data-tc-ighideads]:not([data-tc-auditmode]) [data-tc-ad] {
+  display: none !important;
+}
+
+/* "Suggested for you" account carousels */
+html[data-tc-ighidesuggestedaccounts]:not([data-tc-auditmode]) [data-tc-suggestedaccounts] {
+  display: none !important;
+}
+
+/* Open-in-app banners, sheets and dialogs */
+html[data-tc-ighideappnags]:not([data-tc-auditmode]) [data-tc-appnag] {
+  display: none !important;
+}
+
+/* Threads and Meta AI entry points */
+html[data-tc-ighidepromos]:not([data-tc-auditmode]) [data-tc-promo],
+html[data-tc-ighidepromos]:not([data-tc-auditmode]) a[href*="threads.net"],
+html[data-tc-ighidepromos]:not([data-tc-auditmode]) a[href*="threads.com"],
+html[data-tc-ighidepromos]:not([data-tc-auditmode]) a[href^="/ai/"] {
+  display: none !important;
+}
+
+/* Shopping */
+html[data-tc-ighideshopping]:not([data-tc-auditmode]) a[href^="/shop/"],
+html[data-tc-ighideshopping]:not([data-tc-auditmode]) a[href="/shop"] {
+  display: none !important;
+}
+
+/* Stories tray on home */
+html[data-tc-ighidestories]:not([data-tc-auditmode]) [data-tc-stories] {
+  display: none !important;
+}
+
+/* Like and view counts */
+html[data-tc-ighidecounts]:not([data-tc-auditmode]) [data-tc-count],
+html[data-tc-ighidecounts]:not([data-tc-auditmode]) a[href$="/liked_by/"] {
+  display: none !important;
+}
+
+/* Notifications tab */
+html[data-tc-ighidenotifications]:not([data-tc-auditmode]) a[href="/accounts/activity/"] {
+  display: none !important;
+}
+
+/* Everything after the stop point: the caught-up marker, or a long run of
+   hidden suggestions (see instagram.content.js). */
+html:is([data-tc-igstopatcaughtup], [data-tc-ighidesuggestedposts]):not([data-tc-auditmode]) [data-tc-aftercaughtup] {
+  display: none !important;
+}
+
+/* ---- Audit mode ------------------------------------------------------------
+   Nothing is hidden. Matches are dimmed with a red dashed outline and marked
+   cells get a strip naming the filter that caught them. */
+
+html[data-tc-auditmode][data-tc-ighideads] [data-tc-ad] { --tc-hit: 1; --tc-why: "ad"; }
+html[data-tc-auditmode][data-tc-ighidesuggestedposts] [data-tc-suggested] { --tc-hit: 1; --tc-why: "suggested post"; }
+html[data-tc-auditmode][data-tc-ighidesuggestedaccounts] [data-tc-suggestedaccounts] { --tc-hit: 1; --tc-why: "suggested accounts"; }
+html[data-tc-auditmode][data-tc-ighidereels] [data-tc-reelsmodule] { --tc-hit: 1; --tc-why: "reels"; }
+html[data-tc-auditmode][data-tc-ighideappnags] [data-tc-appnag] { --tc-hit: 1; --tc-why: "app nag"; }
+html[data-tc-auditmode][data-tc-ighidepromos] [data-tc-promo] { --tc-hit: 1; --tc-why: "promo"; }
+html[data-tc-auditmode][data-tc-ighidestories] [data-tc-stories] { --tc-hit: 1; --tc-why: "stories"; }
+html[data-tc-auditmode][data-tc-ighidecounts] [data-tc-count] { --tc-hit: 1; --tc-why: "count"; }
+html[data-tc-auditmode]:is([data-tc-igstopatcaughtup], [data-tc-ighidesuggestedposts]) [data-tc-aftercaughtup] { --tc-hit: 1; --tc-why: "after stop"; }
+
+html[data-tc-auditmode][data-tc-ighidereels] a[href="/reels/"],
+html[data-tc-auditmode][data-tc-ighidereels] a[href$="/reels/"],
+html[data-tc-auditmode][data-tc-ighideexplore] a[href^="/explore/people"],
+html[data-tc-auditmode][data-tc-ighidepromos] a[href*="threads.net"],
+html[data-tc-auditmode][data-tc-ighideshopping] a[href^="/shop/"],
+html[data-tc-auditmode][data-tc-ighidenotifications] a[href="/accounts/activity/"] {
+  --tc-hit: 1;
+}
+
+html[data-tc-auditmode] :is(
+  [data-tc-ad], [data-tc-suggested], [data-tc-suggestedaccounts], [data-tc-reelsmodule],
+  [data-tc-appnag], [data-tc-promo], [data-tc-stories], [data-tc-count], [data-tc-aftercaughtup],
+  a[href="/reels/"], a[href$="/reels/"], a[href^="/explore/people"], a[href*="threads.net"],
+  a[href^="/shop/"], a[href="/accounts/activity/"]
+) {
+  outline: 2px dashed rgba(244, 33, 46, var(--tc-hit, 0));
+  outline-offset: -2px;
+}
+
+html[data-tc-auditmode] :is(
+  [data-tc-ad], [data-tc-suggested], [data-tc-suggestedaccounts], [data-tc-reelsmodule],
+  [data-tc-appnag], [data-tc-promo], [data-tc-stories], [data-tc-aftercaughtup]
+) > * {
+  opacity: calc(1 - 0.6 * var(--tc-hit, 0));
+}
+
+html[data-tc-auditmode] :is(
+  [data-tc-ad], [data-tc-suggested], [data-tc-suggestedaccounts], [data-tc-reelsmodule],
+  [data-tc-appnag], [data-tc-promo], [data-tc-stories], [data-tc-aftercaughtup]
+)::before {
+  content: var(--tc-why, none);
+  display: block;
+  background: #f4212e;
+  color: #fff;
+  font: 700 11px/1 -apple-system, "Segoe UI", sans-serif;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 4px 12px;
+}

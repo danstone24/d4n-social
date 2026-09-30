@@ -1,0 +1,304 @@
+/* d4n-social rules: x (cleanser.css) */
+
+/* Promoted tweets and promoted trends */
+html[data-tc-hideads]:not([data-tc-auditmode]) [data-tc-ad] {
+  display: none !important;
+}
+
+/* Sidebar: What's happening / Trends */
+html[data-tc-hidetrending]:not([data-tc-auditmode]) [data-tc-trending] {
+  display: none !important;
+}
+
+/* Who to follow / You might like — sidebar boxes and inline timeline cells */
+html[data-tc-hidewhotofollow]:not([data-tc-auditmode]) [data-tc-whotofollow] {
+  display: none !important;
+}
+
+/* Premium upsells: marked sidebar boxes plus static nav/menu links */
+html[data-tc-hidepremium]:not([data-tc-auditmode]) [data-tc-premium],
+html[data-tc-hidepremium]:not([data-tc-auditmode]) a[href="/i/premium_sign_up"],
+html[data-tc-hidepremium]:not([data-tc-auditmode]) a[href^="/i/verified-orgs-signup"],
+html[data-tc-hidepremium]:not([data-tc-auditmode]) a[aria-label="Premium"] {
+  display: none !important;
+}
+
+/* Grok: left-nav entry, per-tweet action buttons, misc entry points */
+html[data-tc-hidegrok]:not([data-tc-auditmode]) a[href="/i/grok"],
+html[data-tc-hidegrok]:not([data-tc-auditmode]) a[aria-label="Grok"],
+html[data-tc-hidegrok]:not([data-tc-auditmode]) button[aria-label^="Grok"],
+html[data-tc-hidegrok]:not([data-tc-auditmode]) div[data-testid="GrokDrawer"] {
+  display: none !important;
+}
+
+/* Posts and replies whose text mentions @grok */
+html[data-tc-hidegrokmentions]:not([data-tc-auditmode]) [data-tc-grokmention] {
+  display: none !important;
+}
+
+/* Replies that are only @mentions with no words */
+html[data-tc-hidementiononlyreplies]:not([data-tc-auditmode]) [data-tc-mentiononly] {
+  display: none !important;
+}
+
+/* Posts whose text is nothing but a link */
+html[data-tc-hidelinkonlyposts]:not([data-tc-auditmode]) [data-tc-linkonly] {
+  display: none !important;
+}
+
+/* "Discover more" suggested posts appended below conversations */
+html[data-tc-hidediscovermore]:not([data-tc-auditmode]) [data-tc-discovermore] {
+  display: none !important;
+}
+
+/* Following-only mode: hide the "For You" tab (content.js switches tabs) */
+html[data-tc-followingonly]:not([data-tc-auditmode]) [data-tc-foryou] {
+  display: none !important;
+}
+
+/* ---- Beta filters (all flags off by default) ---- */
+
+/* Content filters: marked by content.js, gated per beta flag */
+html[data-tc-betamutewords]:not([data-tc-auditmode]) [data-tc-muteword],
+html[data-tc-betaloweffort]:not([data-tc-auditmode]) [data-tc-loweffort],
+html[data-tc-betaengagementbait]:not([data-tc-auditmode]) [data-tc-bait],
+html[data-tc-betahidereposts]:not([data-tc-auditmode]) [data-tc-repost],
+html[data-tc-betahashtagspam]:not([data-tc-auditmode]) [data-tc-hashtagspam],
+html[data-tc-betahidenags]:not([data-tc-auditmode]) [data-tc-nag],
+html[data-tc-betahideaiposts]:not([data-tc-auditmode]) [data-tc-aipost],
+html[data-tc-betahideparody]:not([data-tc-auditmode]) [data-tc-parody],
+html[data-tc-betahideverifiedreplies]:not([data-tc-auditmode]) [data-tc-verifiedreply] {
+  display: none !important;
+}
+
+/* Slim left nav: entries most people never touch */
+html[data-tc-betaslimnav]:not([data-tc-auditmode]) nav a[aria-label="Communities"],
+html[data-tc-betaslimnav]:not([data-tc-auditmode]) nav a[aria-label="Jobs"],
+html[data-tc-betaslimnav]:not([data-tc-auditmode]) nav a[href="/jobs"],
+html[data-tc-betaslimnav]:not([data-tc-auditmode]) nav a[aria-label="Ads"],
+html[data-tc-betaslimnav]:not([data-tc-auditmode]) nav a[aria-label="Verified Orgs"],
+html[data-tc-betaslimnav]:not([data-tc-auditmode]) nav a[aria-label="Business"],
+html[data-tc-betaslimnav]:not([data-tc-auditmode]) nav a[aria-label="Monetization"] {
+  display: none !important;
+}
+
+/* Sticky Messages drawer, bottom-right */
+html[data-tc-betahidedmdrawer]:not([data-tc-auditmode]) div[data-testid="DMDrawer"] {
+  display: none !important;
+}
+
+/* View counts in post action bars */
+html[data-tc-betahideviews]:not([data-tc-auditmode]) article a[href$="/analytics"] {
+  display: none !important;
+}
+
+/* One-click block button, injected into each post's action bar */
+html:not([data-tc-blockbuttons]) .tc-block-btn {
+  display: none !important;
+}
+
+/* One-click mute button (beta), same treatment */
+html:not([data-tc-betamutebutton]) .tc-mute-btn {
+  display: none !important;
+}
+
+.tc-block-btn,
+.tc-mute-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  /* the focused post's action bar stretches children; keep the button centered */
+  align-self: center;
+  box-sizing: border-box;
+  width: 34.75px;
+  height: 34.75px;
+  margin-left: 2px;
+  background: none;
+  border: 0;
+  padding: 0;
+  border-radius: 9999px;
+  color: #71767b;
+  cursor: pointer;
+}
+
+.tc-block-btn svg,
+.tc-mute-btn svg {
+  width: 18.75px;
+  height: 18.75px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.75;
+}
+
+.tc-block-btn:hover {
+  color: #f4212e;
+  background: rgba(244, 33, 46, 0.1);
+}
+
+.tc-mute-btn:hover {
+  color: #1d9bf0;
+  background: rgba(29, 155, 240, 0.1);
+}
+
+/* A post hidden after its author was blocked (removed on Undo) */
+[data-tc-blockedhide] {
+  display: none !important;
+}
+
+/* Confirmation toast with Undo */
+.tc-toast {
+  position: fixed;
+  bottom: 72px; /* above the mobile bottom bar */
+  left: 50%;
+  transform: translateX(-50%);
+  display: none;
+  align-items: center;
+  gap: 16px;
+  background: #1d9bf0;
+  color: #fff;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font: 14px/1.2 -apple-system, "Segoe UI", sans-serif;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  z-index: 10000;
+}
+
+.tc-toast.tc-visible {
+  display: flex;
+}
+
+.tc-toast button {
+  background: none;
+  border: 0;
+  padding: 0;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* ---- Audit mode ------------------------------------------------------------
+   For testing filters: nothing is hidden. Matches are dimmed with a red dashed
+   outline, and marked cells get a strip naming the filter that caught them.
+   Each filter rule below keeps its flag gate and sets --tc-hit (plus --tc-why
+   for the label); the shared rules at the end turn those into styling. An
+   element the filter would not hide never gets the vars, so it stays normal. */
+
+html[data-tc-auditmode][data-tc-hideads] [data-tc-ad] { --tc-hit: 1; --tc-why: "ad"; }
+html[data-tc-auditmode][data-tc-hidetrending] [data-tc-trending] { --tc-hit: 1; --tc-why: "trending"; }
+html[data-tc-auditmode][data-tc-hidewhotofollow] [data-tc-whotofollow] { --tc-hit: 1; --tc-why: "follow suggestion"; }
+html[data-tc-auditmode][data-tc-hidepremium] [data-tc-premium] { --tc-hit: 1; --tc-why: "premium"; }
+html[data-tc-auditmode][data-tc-hidegrokmentions] [data-tc-grokmention] { --tc-hit: 1; --tc-why: "@grok mention"; }
+html[data-tc-auditmode][data-tc-hidementiononlyreplies] [data-tc-mentiononly] { --tc-hit: 1; --tc-why: "mention-only"; }
+html[data-tc-auditmode][data-tc-hidelinkonlyposts] [data-tc-linkonly] { --tc-hit: 1; --tc-why: "link-only"; }
+html[data-tc-auditmode][data-tc-hidediscovermore] [data-tc-discovermore] { --tc-hit: 1; --tc-why: "discover more"; }
+html[data-tc-auditmode][data-tc-betamutewords] [data-tc-muteword] { --tc-hit: 1; --tc-why: "mute word"; }
+html[data-tc-auditmode][data-tc-betaloweffort] [data-tc-loweffort] { --tc-hit: 1; --tc-why: "low effort"; }
+html[data-tc-auditmode][data-tc-betaengagementbait] [data-tc-bait] { --tc-hit: 1; --tc-why: "engagement bait"; }
+html[data-tc-auditmode][data-tc-betahidereposts] [data-tc-repost] { --tc-hit: 1; --tc-why: "repost"; }
+html[data-tc-auditmode][data-tc-betahashtagspam] [data-tc-hashtagspam] { --tc-hit: 1; --tc-why: "hashtag spam"; }
+html[data-tc-auditmode][data-tc-betahidenags] [data-tc-nag] { --tc-hit: 1; --tc-why: "nag"; }
+html[data-tc-auditmode][data-tc-betahideaiposts] [data-tc-aipost] { --tc-hit: 1; --tc-why: "AI post"; }
+html[data-tc-auditmode][data-tc-betahideparody] [data-tc-parody] { --tc-hit: 1; --tc-why: "parody"; }
+html[data-tc-auditmode][data-tc-betahideverifiedreplies] [data-tc-verifiedreply] { --tc-hit: 1; --tc-why: "blue-check reply"; }
+
+/* Static (unmarked) targets: dimmed and outlined, no label */
+html[data-tc-auditmode][data-tc-hidepremium] a[href="/i/premium_sign_up"],
+html[data-tc-auditmode][data-tc-hidepremium] a[href^="/i/verified-orgs-signup"],
+html[data-tc-auditmode][data-tc-hidepremium] a[aria-label="Premium"],
+html[data-tc-auditmode][data-tc-hidegrok] a[href="/i/grok"],
+html[data-tc-auditmode][data-tc-hidegrok] a[aria-label="Grok"],
+html[data-tc-auditmode][data-tc-hidegrok] button[aria-label^="Grok"],
+html[data-tc-auditmode][data-tc-hidegrok] div[data-testid="GrokDrawer"],
+html[data-tc-auditmode][data-tc-followingonly] [data-tc-foryou],
+html[data-tc-auditmode][data-tc-betaslimnav] nav a[aria-label="Communities"],
+html[data-tc-auditmode][data-tc-betaslimnav] nav a[aria-label="Jobs"],
+html[data-tc-auditmode][data-tc-betaslimnav] nav a[href="/jobs"],
+html[data-tc-auditmode][data-tc-betaslimnav] nav a[aria-label="Ads"],
+html[data-tc-auditmode][data-tc-betaslimnav] nav a[aria-label="Verified Orgs"],
+html[data-tc-auditmode][data-tc-betaslimnav] nav a[aria-label="Business"],
+html[data-tc-auditmode][data-tc-betaslimnav] nav a[aria-label="Monetization"],
+html[data-tc-auditmode][data-tc-betahidedmdrawer] div[data-testid="DMDrawer"],
+html[data-tc-auditmode][data-tc-betahideviews] article a[href$="/analytics"] {
+  --tc-hit: 1;
+}
+
+/* Shared styling. Selectors are the bare targets; the vars do the gating:
+   with --tc-hit unset the outline is transparent and opacity stays 1. */
+html[data-tc-auditmode] :is(
+  [data-tc-ad], [data-tc-trending], [data-tc-whotofollow], [data-tc-premium],
+  [data-tc-grokmention], [data-tc-mentiononly], [data-tc-linkonly],
+  [data-tc-discovermore], [data-tc-muteword], [data-tc-loweffort],
+  [data-tc-bait], [data-tc-repost], [data-tc-hashtagspam], [data-tc-nag],
+  [data-tc-aipost], [data-tc-parody], [data-tc-verifiedreply], [data-tc-foryou],
+  a[href="/i/premium_sign_up"], a[href^="/i/verified-orgs-signup"],
+  a[aria-label="Premium"], a[href="/i/grok"], a[aria-label="Grok"],
+  button[aria-label^="Grok"], div[data-testid="GrokDrawer"],
+  nav a[aria-label="Communities"], nav a[aria-label="Jobs"], nav a[href="/jobs"],
+  nav a[aria-label="Ads"], nav a[aria-label="Verified Orgs"],
+  nav a[aria-label="Business"], nav a[aria-label="Monetization"],
+  div[data-testid="DMDrawer"], article a[href$="/analytics"]
+) {
+  outline: 2px dashed rgba(244, 33, 46, var(--tc-hit, 0));
+  outline-offset: -2px;
+}
+
+/* Dim the contents rather than the element so the label strip stays bright */
+html[data-tc-auditmode] :is(
+  [data-tc-ad], [data-tc-trending], [data-tc-whotofollow], [data-tc-premium],
+  [data-tc-grokmention], [data-tc-mentiononly], [data-tc-linkonly],
+  [data-tc-discovermore], [data-tc-muteword], [data-tc-loweffort],
+  [data-tc-bait], [data-tc-repost], [data-tc-hashtagspam], [data-tc-nag],
+  [data-tc-aipost], [data-tc-parody], [data-tc-verifiedreply], [data-tc-foryou],
+  a[href="/i/premium_sign_up"], a[href^="/i/verified-orgs-signup"],
+  a[aria-label="Premium"], a[href="/i/grok"], a[aria-label="Grok"],
+  button[aria-label^="Grok"], div[data-testid="GrokDrawer"],
+  nav a[aria-label="Communities"], nav a[aria-label="Jobs"], nav a[href="/jobs"],
+  nav a[aria-label="Ads"], nav a[aria-label="Verified Orgs"],
+  nav a[aria-label="Business"], nav a[aria-label="Monetization"],
+  div[data-testid="DMDrawer"], article a[href$="/analytics"]
+) > * {
+  opacity: calc(1 - 0.6 * var(--tc-hit, 0));
+}
+
+/* Label strip at the top of marked cells, naming the filter */
+html[data-tc-auditmode] :is(
+  [data-tc-ad], [data-tc-trending], [data-tc-whotofollow], [data-tc-premium],
+  [data-tc-grokmention], [data-tc-mentiononly], [data-tc-linkonly],
+  [data-tc-discovermore], [data-tc-muteword], [data-tc-loweffort],
+  [data-tc-bait], [data-tc-repost], [data-tc-hashtagspam], [data-tc-nag],
+  [data-tc-aipost], [data-tc-parody], [data-tc-verifiedreply]
+)::before {
+  content: var(--tc-why, none);
+  display: block;
+  background: #f4212e;
+  color: #fff;
+  font: 700 11px/1 -apple-system, "Segoe UI", sans-serif;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 4px 12px;
+}
+
+/* ---- Mobile shell -----------------------------------------------------------
+   Always on: the app is the shell, so the site's own app-install bar goes. */
+div[data-testid="BottomBar"] {
+  display: none !important;
+}
+
+/* Premium and Grok entry points in the mobile bottom bar and account drawer */
+html[data-tc-hidepremium]:not([data-tc-auditmode]) a[href^="/i/premium"],
+html[data-tc-hidepremium]:not([data-tc-auditmode]) a[href="/i/verified-choose"] {
+  display: none !important;
+}
+
+/* Slim nav on mobile: bottom-bar and drawer entries are plain links, not always inside <nav> */
+html[data-tc-betaslimnav]:not([data-tc-auditmode]) a[aria-label="Communities"],
+html[data-tc-betaslimnav]:not([data-tc-auditmode]) a[aria-label="Jobs"],
+html[data-tc-betaslimnav]:not([data-tc-auditmode]) a[aria-label="Verified Orgs"],
+html[data-tc-betaslimnav]:not([data-tc-auditmode]) a[aria-label="Business"],
+html[data-tc-betaslimnav]:not([data-tc-auditmode]) a[aria-label="Monetization"],
+html[data-tc-betaslimnav]:not([data-tc-auditmode]) a[href="/i/communities"],
+html[data-tc-betaslimnav]:not([data-tc-auditmode]) a[href="/jobs"] {
+  display: none !important;
+}

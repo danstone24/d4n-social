@@ -1,0 +1,424 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SocialApp: plan and mocks</title>
+<style>
+  :root { --fg:#fff; --mut:#9a9a9a; --line:#2a2a2a; --sur:#111; --acc:#7cc4ff; --warn:#f4a742; --bad:#f4212e; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:#000; color:var(--fg); font:15px/1.5 -apple-system, "Segoe UI", Helvetica, Arial, sans-serif; }
+  main { max-width:1180px; margin:0 auto; padding:24px 18px 80px; }
+  h1 { font-size:24px; margin:0 0 4px; }
+  h2 { font-size:18px; margin:40px 0 10px; padding-top:14px; border-top:1px solid var(--line); }
+  h3 { font-size:15px; margin:22px 0 6px; }
+  p { margin:0 0 10px; }
+  a { color:var(--acc); }
+  code { font:13px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace; background:var(--sur); padding:1px 5px; border-radius:3px; }
+  pre { background:var(--sur); padding:12px; overflow:auto; font:13px/1.45 ui-monospace, SFMono-Regular, Menlo, monospace; border:1px solid var(--line); }
+  table { border-collapse:collapse; width:100%; margin:8px 0 14px; font-size:14px; }
+  th, td { text-align:left; vertical-align:top; padding:6px 8px; border-bottom:1px solid var(--line); }
+  th { color:var(--mut); font-weight:600; font-size:12px; text-transform:uppercase; letter-spacing:.04em; }
+  ul, ol { margin:0 0 12px; padding-left:22px; }
+  li { margin:2px 0; }
+  .mut { color:var(--mut); }
+  .meta { color:var(--mut); font-size:13px; margin-bottom:22px; }
+  .tag { display:inline-block; font-size:11px; padding:0 6px; border:1px solid var(--line); border-radius:3px; color:var(--mut); vertical-align:middle; }
+  .ok { color:#6ad38a; } .no { color:var(--bad); } .mid { color:var(--warn); }
+  .cols { display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:16px 28px; }
+
+  /* architecture boxes */
+  .arch { display:grid; grid-template-columns:1fr; gap:10px; margin:10px 0 16px; }
+  .box { border:1px solid var(--line); padding:10px 12px; background:var(--sur); }
+  .box b { display:block; margin-bottom:4px; }
+  .box small { color:var(--mut); display:block; }
+  .flow { color:var(--mut); text-align:center; font-size:12px; }
+
+  /* phone mocks */
+  .mocks { display:grid; grid-template-columns:repeat(auto-fit, minmax(300px, 1fr)); gap:26px 22px; margin:14px 0 24px; align-items:start; }
+  .mock { }
+  .mock h4 { margin:0 0 8px; font-size:14px; }
+  .mock h4 span { color:var(--mut); font-weight:400; }
+  .mock p.note { color:var(--mut); font-size:13px; margin:8px 0 0; }
+  .phone { width:300px; height:620px; border:2px solid #333; border-radius:34px; overflow:hidden; position:relative; display:flex; flex-direction:column; margin:0 auto; }
+  .sb { height:42px; flex:none; display:flex; align-items:flex-end; justify-content:space-between; padding:0 22px 4px; font-size:11px; font-weight:600; }
+  .web { flex:1; overflow:hidden; position:relative; }
+  .tab { height:64px; flex:none; display:flex; align-items:flex-start; justify-content:space-around; padding-top:8px; font-size:10px; border-top:1px solid; }
+  .tab div { text-align:center; width:60px; }
+  .tab svg { display:block; margin:0 auto 2px; width:22px; height:22px; fill:none; stroke:currentColor; stroke-width:1.8; }
+  .home { position:absolute; bottom:6px; left:50%; width:110px; height:4px; border-radius:2px; transform:translateX(-50%); }
+
+  /* generic feed bits */
+  .ig-head { display:flex; align-items:center; justify-content:space-between; padding:8px 12px; font-weight:700; font-size:15px; }
+  .ig-head svg { width:20px; height:20px; fill:none; stroke:currentColor; stroke-width:1.8; }
+  .stories { display:flex; gap:10px; padding:2px 12px 8px; overflow:hidden; }
+  .stories div { width:52px; flex:none; text-align:center; font-size:9px; }
+  .stories i { display:block; width:52px; height:52px; border-radius:50%; border:2px solid #d62976; margin-bottom:3px; }
+  .post { padding:0 0 6px; }
+  .ph { display:flex; align-items:center; gap:8px; padding:6px 12px; font-size:12px; font-weight:600; }
+  .ph i { width:26px; height:26px; border-radius:50%; flex:none; }
+  .ph small { font-weight:400; margin-left:auto; }
+  .pic { height:150px; }
+  .acts { display:flex; gap:14px; padding:8px 12px 2px; font-size:11px; }
+  .acts span { display:inline-flex; align-items:center; gap:4px; }
+  .cap { padding:0 12px; font-size:11px; line-height:1.35; }
+  .cap b { font-weight:600; }
+
+  .x-post { display:flex; gap:8px; padding:9px 12px; border-bottom:1px solid; }
+  .x-post i { width:34px; height:34px; border-radius:50%; flex:none; }
+  .x-body { font-size:11.5px; line-height:1.35; flex:1; min-width:0; }
+  .x-body b { font-weight:700; }
+  .x-body .h { font-weight:400; opacity:.6; }
+  .x-acts { display:flex; justify-content:space-between; padding:6px 30px 0 0; font-size:10px; opacity:.7; }
+  .x-tabs { display:flex; border-bottom:1px solid; font-size:12px; font-weight:600; }
+  .x-tabs div { flex:1; text-align:center; padding:10px 0 8px; }
+  .x-tabs .on { border-bottom:3px solid #1d9bf0; }
+
+  /* settings list */
+  .set { font-size:12px; }
+  .set .sec { padding:14px 14px 4px; font-size:10px; text-transform:uppercase; letter-spacing:.06em; }
+  .row { display:flex; align-items:center; justify-content:space-between; padding:8px 14px; border-bottom:1px solid; }
+  .row span small { display:block; font-size:10px; opacity:.6; }
+  .sw { width:34px; height:20px; border-radius:10px; position:relative; flex:none; }
+  .sw::after { content:""; position:absolute; top:2px; width:16px; height:16px; border-radius:50%; background:#fff; }
+  .sw.on::after { right:2px; } .sw.off::after { left:2px; }
+  .audit { position:relative; outline:2px dashed var(--bad); outline-offset:-2px; }
+  .audit::before { content:attr(data-why); display:block; background:var(--bad); color:#fff; font:700 9px/1 -apple-system, sans-serif; letter-spacing:.04em; text-transform:uppercase; padding:3px 12px; }
+  .audit > *:not(:first-child) { opacity:.4; }
+</style>
+</head>
+<body>
+<main>
+
+<h1>SocialApp: plan and mocks</h1>
+<p class="meta">Working title. An iPhone app that opens Instagram and X inside its own browser and strips the parts we do not want. 30 Sep 2026, draft 2 (built 1 Oct: shell A, all recommendations approved).</p>
+
+<p>The apps you are thinking of (Dull, UNDOOMED, SocialLite, ScrollGuard) all do the same thing: load the platform's mobile website in a WebView, inject CSS and JavaScript to hide Reels, Explore, ads and suggestions, and block a few URLs natively. That is the TwitterCleanser model with a native shell around it. Everything below assumes that approach. The open decisions are in the chat round that goes with this document.</p>
+
+<h2>1. The apps you probably mean</h2>
+<table>
+<tr><th>App</th><th>Type</th><th>Platforms</th><th>Instagram: hides</th><th>X: hides</th><th>Price</th></tr>
+<tr><td><a href="https://getdull.app/instagram-without-reels/" target="_blank" rel="noopener noreferrer">Dull</a></td><td>WebView wrapper</td><td>Instagram (YouTube, Facebook sister apps)</td><td>Reels tab, Reels in feed, Explore, suggested posts. Keeps feed, stories, DMs, search</td><td>n/a</td><td>$3.99/mo, $59.99 lifetime</td></tr>
+<tr><td><a href="https://apps.apple.com/us/app/undoomed-reels-feed-blocker/id6751837079" target="_blank" rel="noopener noreferrer">UNDOOMED</a></td><td>WebView wrapper, multi-platform</td><td>Instagram, Threads, Reddit, Facebook, X, YouTube, LinkedIn</td><td>Reels, Stories, Explore, suggested posts. "Messages only" mode</td><td>For You timeline, Trends, Who to follow</td><td>Free + $1.99 to $2.99/mo</td></tr>
+<tr><td><a href="https://apps.apple.com/us/app/sociallite-block-reels-shorts/id6757661674" target="_blank" rel="noopener noreferrer">SocialLite</a></td><td>WebView wrapper, multi-platform</td><td>Instagram, YouTube, Snapchat, X, Reddit, Facebook</td><td>Reels, Explore, live, shopping, ads, suggestions</td><td>Short video, recommendations, ads</td><td>Free + $3.99/mo</td></tr>
+<tr><td><a href="https://scrollguard.app/" target="_blank" rel="noopener noreferrer">ScrollGuard</a></td><td>"Clean web app versions" (wrapper)</td><td>Instagram, YouTube, TikTok, Facebook, Reddit, LinkedIn, X</td><td>Reels and Explore feeds</td><td>Not detailed</td><td>Free + premium</td></tr>
+<tr><td><a href="https://apps.apple.com/us/app/pants-no-shorts/id6761088938" target="_blank" rel="noopener noreferrer">Pants: No Shorts</a></td><td>Wrapper</td><td>Instagram, Facebook, YouTube</td><td>Reels, recommended content, endless feed. Explore toggleable</td><td>n/a</td><td>Free + $4.99/mo</td></tr>
+<tr><td><a href="https://apps.apple.com/us/app/no-reel-for-instagram/id6752605548" target="_blank" rel="noopener noreferrer">No Reel for Instagram</a></td><td>Safari extension</td><td>Instagram</td><td>Reels nav, Reels in search, Stories, For You tab, suggested accounts</td><td>n/a</td><td>$3.39 once</td></tr>
+<tr><td><a href="https://apps.apple.com/us/app/unhook-distraction-blocker/id6759874480" target="_blank" rel="noopener noreferrer">Unhook</a></td><td>Safari extension (Mac)</td><td>YouTube, X, Reddit, Instagram, Bluesky, Facebook</td><td>Explore, suggested posts, Reels</td><td>Trends, Who to follow, Explore</td><td>$2.99 once</td></tr>
+<tr><td><a href="https://github.com/Fin-Murphy/Glance-sociallite-wrapper" target="_blank" rel="noopener noreferrer">Glance</a> (open source)</td><td>WebView wrapper, Swift</td><td>Instagram</td><td>Reels, Explore, ads, suggestions, non-followed posts</td><td>n/a</td><td>Free, no licence file</td></tr>
+</table>
+<p>Two of these are worth a closer look before we start. UNDOOMED is the closest to what you described (multi-platform, per-platform toggles, DM-only mode). Glance is a Swift WebView wrapper for Instagram with its source on GitHub, so its selectors, user agent trick and navigation blocklist are a free head start. The modded "Instagram Clean" IPA on GitHub is a different route (sideloaded patched binary) and not one we want.</p>
+
+<h2>2. How it works</h2>
+<div class="arch">
+  <div class="box"><b>Native shell (SwiftUI)</b><small>Same skeleton as CellSignal: XcodeGen <code>project.yml</code>, <code>scripts/sim.sh</code>, <code>scripts/testflight.sh</code>, bundle prefix <code>uk.d4n</code>. Holds one WKWebView per platform, a settings store, and the filter settings screen. The D4N Travel web shell (<code>WebTab.swift</code>) is the starting point for the WebView owner.</small></div>
+  <div class="flow">settings flags down, hidden counts up</div>
+  <div class="box"><b>WKWebView per platform</b><small>Loads <code>instagram.com</code> or <code>x.com</code>. Persistent cookie store so login sticks between launches. User agent ends in <code>Mobile/15E148 Safari/604.1</code> so the sites treat it as Mobile Safari, not an in-app browser. Inline media playback on. Native navigation policy denies <code>/reels/</code>, <code>/explore/</code> (except search), <code>instagram://</code> and App Store bounces before they load.</small></div>
+  <div class="flow">WKUserScript at document start</div>
+  <div class="box"><b>Rules: content.js + cleanser.css per platform</b><small>Lifted from TwitterCleanser. JS marks unwanted elements with <code>data-tc-*</code>, CSS hides them, gated on flags on <code>&lt;html&gt;</code>. Toggling a filter off removes the flag and everything comes back with no reload. MutationObserver with a debounced rescan handles infinite scroll. The only change is the settings transport: <code>storage.sync</code> becomes a native bridge (<code>window.webkit.messageHandlers</code> in, <code>evaluateJavaScript</code> out).</small></div>
+</div>
+<p>What this means in practice: the X rules are mostly a port, with a pass for the mobile layout. The Instagram rules are new, but the shape is identical and Glance shows the selectors that work. Neither site is modified or reverse engineered beyond what the browser already sees.</p>
+
+<h3>Proposed repo layout</h3>
+<pre>SocialApp/
+  README.md
+  ios/
+    project.yml              XcodeGen spec (the .xcodeproj is generated, git-ignored)
+    scripts/sim.sh           build + install on the iPhone 17 Pro simulator, SHOT= for screenshots
+    scripts/testflight.sh    archive, sign with the ASC key, upload
+    SocialApp/
+      App/                   entry, Settings (UserDefaults), Platform enum
+      Web/                   WebTab (WKWebView owner), NavigationPolicy, RulesBridge
+      Views/                 RootView, FiltersView, AuditView
+      Rules/                 bundled as resources, injected at document start
+        x/content.js  x/cleanser.css
+        instagram/content.js  instagram/cleanser.css
+    SocialAppTests/          rule parsing, navigation policy, settings defaults
+</pre>
+
+<h2>3. X: what carries over from TwitterCleanser</h2>
+<p>Mobile X keeps the same <code>data-testid</code> hooks (<code>tweet</code>, <code>cellInnerDiv</code>, <code>User-Name</code>, <code>tweetText</code>, <code>trend</code>, <code>socialContext</code>) so the post-level filters port as they are. The layout differs: there is no sidebar column, so "What's happening" and "Who to follow" appear in the Explore tab and inline in the timeline; Grok and Premium live in the bottom bar and the account drawer.</p>
+<table>
+<tr><th>Filter</th><th>Mobile status</th><th>Note</th></tr>
+<tr><td>Ads and promoted trends</td><td class="ok">Ports as is</td><td>Same "Ad" label span</td></tr>
+<tr><td>Trending box</td><td class="mid">New selector</td><td>No sidebar; lives on the Explore tab and in inline timeline modules</td></tr>
+<tr><td>Who to follow</td><td class="mid">Inline only</td><td>Inline module logic already exists</td></tr>
+<tr><td>Premium upsells</td><td class="mid">New selector</td><td>Account drawer link plus timeline nags</td></tr>
+<tr><td>Grok nav and buttons</td><td class="mid">New selector</td><td>Bottom-bar tab instead of left nav</td></tr>
+<tr><td>@grok mentions, mention-only, link-only, low effort, bait, reposts, hashtag spam, AI-made, parody, blue-check replies, mute words</td><td class="ok">Port as is</td><td>All post-text filters</td></tr>
+<tr><td>Discover more</td><td class="ok">Ports as is</td><td></td></tr>
+<tr><td>Following-only home</td><td class="ok">Ports as is</td><td>Tab list is the same on mobile. Suggest default on</td></tr>
+<tr><td>One-click block and mute</td><td class="ok">Ports as is</td><td>Same web API call with the session cookie and csrf token. Action bar exists on mobile</td></tr>
+<tr><td>Slim nav, DM drawer, view counts</td><td class="mid">Partly</td><td>DM drawer does not exist on mobile. Slim nav maps to the account drawer</td></tr>
+<tr><td>Audit mode</td><td class="ok">Ports as is</td><td>Pure CSS, still the way you test a filter</td></tr>
+<tr><td>Import and export</td><td class="ok">Native</td><td>Share sheet for JSON, and paste to import</td></tr>
+<tr><td>Block log</td><td class="ok">Native</td><td>Stored on the phone</td></tr>
+</table>
+
+<h2>4. Instagram: proposed rule set for v1</h2>
+<div class="cols">
+<div>
+<h3>Hidden by default</h3>
+<ul>
+<li>Reels tab in the bottom bar, and the <code>/reels/</code> route natively</li>
+<li>Reels and suggested posts in the home feed ("Suggested for you", "Reels" carousels)</li>
+<li>Explore grid (<code>/explore/</code>); search stays</li>
+<li>Ads ("Sponsored" label)</li>
+<li>Suggested accounts carousels in feed and on profiles</li>
+<li>"Open in app", "Use the app" and App Store banners</li>
+<li>Threads promotion and Meta AI entry points</li>
+<li>Shopping tab and product tags</li>
+</ul>
+</div>
+<div>
+<h3>Off by default, toggleable</h3>
+<ul>
+<li>Stories row</li>
+<li>Like and view counts</li>
+<li>Comments under posts</li>
+<li>Notifications tab</li>
+<li>DM-only mode (feed hidden, opens on inbox)</li>
+<li>Stop at "You're all caught up" (no further loading)</li>
+<li>Following feed only (drop the For You tab)</li>
+</ul>
+<h3>Always kept</h3>
+<ul>
+<li>Home feed from people you follow, profiles, single posts, DMs, posting photos, search for people</li>
+</ul>
+</div>
+</div>
+
+<h2>5. Known limits of the wrapper model</h2>
+<ul>
+<li><b>No push notifications.</b> The web versions cannot deliver them into a WebView. Every wrapper app lists this as its top complaint. The usual answer is to keep the native app installed for pushes only, or accept none.</li>
+<li><b>Instagram web cannot upload video</b> to posts or stories. Photos post fine.</li>
+<li><b>Login happens inside the WebView</b> with the normal form. 2FA works. "Continue with Facebook" does not, because the Facebook cookie is not shared. Instagram sometimes expires web sessions and asks you to log in again.</li>
+<li><b>Both sites change their DOM.</b> X does it often. Text matching is English only. That is what audit mode and quick rule updates are for.</li>
+<li><b>Slower than native.</b> Feeds render in WebKit. Video plays inline but the experience is web, not the app.</li>
+<li><b>Apple review is not a concern</b> while this ships through TestFlight like CellSignal. It would be if it went to the App Store (wrapper apps get rejected under guideline 4.2).</li>
+</ul>
+
+<h2>6. Shell mocks</h2>
+<p>Three directions for the native shell, each with its filters screen. The feeds inside are what a cleaned Instagram home and X home would look like. Pick one, or mix.</p>
+
+<div class="mocks">
+
+<!-- A -->
+<div class="mock">
+<h4>A <span>Tab bar. Native bottom bar: Instagram, X, Filters. Platform's own dark mode inside.</span></h4>
+<div class="phone" style="background:#000;color:#f5f5f5">
+  <div class="sb"><span>9:41</span><span>●●● ⌇</span></div>
+  <div class="web">
+    <div class="ig-head">Instagram <svg viewBox="0 0 24 24"><path d="M4 8h16M4 16h10"/></svg></div>
+    <div class="stories">
+      <div><i style="background:#2b2b2b"></i>Your story</div>
+      <div><i style="background:#3a3a3a"></i>ellie</div>
+      <div><i style="background:#444"></i>leedsutd</div>
+      <div><i style="background:#333"></i>jack.k</div>
+      <div><i style="background:#3f3f3f"></i>mum</div>
+      <div><i style="background:#2f2f2f"></i>rob</div>
+    </div>
+    <div class="post">
+      <div class="ph"><i style="background:#555"></i>leedsutd <small>2h</small></div>
+      <div class="pic" style="background:linear-gradient(135deg,#1f3b73,#0d1b33)"></div>
+      <div class="acts"><span>♡ 12.4k</span><span>◯ 312</span><span>➤</span></div>
+      <div class="cap"><b>leedsutd</b> Full time at Elland Road. Three points.</div>
+    </div>
+    <div class="post">
+      <div class="ph"><i style="background:#6a4"></i>ellie <small>5h</small></div>
+      <div class="pic" style="background:linear-gradient(160deg,#2e6b4f,#12301f)"></div>
+      <div class="acts"><span>♡ 84</span><span>◯ 6</span><span>➤</span></div>
+      <div class="cap"><b>ellie</b> Roundhay in the sun</div>
+    </div>
+  </div>
+  <div class="tab" style="border-color:#222;color:#888">
+    <div style="color:#fff"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/></svg>Instagram</div>
+    <div><svg viewBox="0 0 24 24"><path d="M4 4l16 16M20 4L4 20"/></svg>X</div>
+    <div><svg viewBox="0 0 24 24"><path d="M3 5h18l-7 8v6l-4-2v-4z"/></svg>Filters</div>
+  </div>
+  <div class="home" style="background:#333"></div>
+</div>
+<p class="note">Each site keeps its own bottom bar minus the Reels and Grok entries, and the native bar sits under it. Two WebViews stay warm, so switching is instant.</p>
+</div>
+
+<div class="mock">
+<h4>A <span>Filters tab. One list, grouped by platform, counts of what was hidden this session.</span></h4>
+<div class="phone" style="background:#000;color:#f5f5f5">
+  <div class="sb"><span>9:41</span><span>●●● ⌇</span></div>
+  <div class="web set">
+    <div class="ig-head">Filters <span class="mut" style="font-weight:400;font-size:12px">v0.1.0</span></div>
+    <div class="sec" style="color:#888">Instagram</div>
+    <div class="row" style="border-color:#1a1a1a"><span>Reels<small>tab, route and feed carousels · 14 hidden</small></span><i class="sw on" style="background:#1d9bf0"></i></div>
+    <div class="row" style="border-color:#1a1a1a"><span>Explore grid<small>search stays · route blocked</small></span><i class="sw on" style="background:#1d9bf0"></i></div>
+    <div class="row" style="border-color:#1a1a1a"><span>Suggested posts<small>"Suggested for you" · 9 hidden</small></span><i class="sw on" style="background:#1d9bf0"></i></div>
+    <div class="row" style="border-color:#1a1a1a"><span>Ads<small>Sponsored · 3 hidden</small></span><i class="sw on" style="background:#1d9bf0"></i></div>
+    <div class="row" style="border-color:#1a1a1a"><span>Stories row</span><i class="sw off" style="background:#333"></i></div>
+    <div class="row" style="border-color:#1a1a1a"><span>DM-only mode</span><i class="sw off" style="background:#333"></i></div>
+    <div class="sec" style="color:#888">X</div>
+    <div class="row" style="border-color:#1a1a1a"><span>Following only<small>hides For You, switches tab</small></span><i class="sw on" style="background:#1d9bf0"></i></div>
+    <div class="row" style="border-color:#1a1a1a"><span>Ads and promoted<small>2 hidden</small></span><i class="sw on" style="background:#1d9bf0"></i></div>
+    <div class="row" style="border-color:#1a1a1a"><span>Trending and Who to follow</span><i class="sw on" style="background:#1d9bf0"></i></div>
+    <div class="row" style="border-color:#1a1a1a"><span>Grok<small>tab and post buttons</small></span><i class="sw on" style="background:#1d9bf0"></i></div>
+    <div class="row" style="border-color:#1a1a1a"><span>Block button on posts</span><i class="sw on" style="background:#1d9bf0"></i></div>
+    <div class="row" style="border-color:#1a1a1a"><span>Beta filters <span class="tag">12</span></span><span class="mut">›</span></div>
+    <div class="row" style="border-color:#1a1a1a"><span>Audit mode<small>dim and label instead of hide</small></span><i class="sw off" style="background:#333"></i></div>
+  </div>
+  <div class="tab" style="border-color:#222;color:#888">
+    <div><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/></svg>Instagram</div>
+    <div><svg viewBox="0 0 24 24"><path d="M4 4l16 16M20 4L4 20"/></svg>X</div>
+    <div style="color:#fff"><svg viewBox="0 0 24 24"><path d="M3 5h18l-7 8v6l-4-2v-4z"/></svg>Filters</div>
+  </div>
+  <div class="home" style="background:#333"></div>
+</div>
+<p class="note">A native SwiftUI list. Each row can open a detail page like the extension popup's ⓘ screen. Import and export live at the bottom.</p>
+</div>
+
+<!-- B -->
+<div class="mock">
+<h4>B <span>Chromeless. Full-screen site, one small native control top-right. Light theme.</span></h4>
+<div class="phone" style="background:#fff;color:#111">
+  <div class="sb"><span>9:41</span><span>●●● ⌇</span></div>
+  <div class="web">
+    <div style="position:absolute;top:6px;right:10px;z-index:2;background:#111;color:#fff;font-size:10px;font-weight:600;padding:3px 7px;border-radius:4px">X · 7 hidden</div>
+    <div class="x-tabs" style="border-color:#e6e6e6"><div class="on">Following</div></div>
+    <div class="x-post" style="border-color:#eee"><i style="background:#c9c9c9"></i><div class="x-body"><b>Leeds United</b> <span class="h">@LUFC · 2h</span><br>Full time. 2-0. Job done at Elland Road.<div class="x-acts"><span>◯ 412</span><span>⇄ 1.1k</span><span>♡ 9.8k</span><span>⃠</span></div></div></div>
+    <div class="x-post" style="border-color:#eee"><i style="background:#8bb"></i><div class="x-body"><b>Simon Willison</b> <span class="h">@simonw · 3h</span><br>New post: things I learned running a small SQLite-backed app on a Worker for a year.<div class="x-acts"><span>◯ 38</span><span>⇄ 120</span><span>♡ 890</span><span>⃠</span></div></div></div>
+    <div class="x-post" style="border-color:#eee"><i style="background:#d9a"></i><div class="x-body"><b>Traffic England</b> <span class="h">@HighwaysNEAST · 4h</span><br>M62 J27 to J28 westbound: one lane closed after a collision. Delays of 30 minutes.<div class="x-acts"><span>◯ 4</span><span>⇄ 22</span><span>♡ 15</span><span>⃠</span></div></div></div>
+    <div class="x-post" style="border-color:#eee"><i style="background:#aab"></i><div class="x-body"><b>Jack</b> <span class="h">@jack_k · 6h</span><br>Anyone else's bus just not turn up today or is it just the 12</div><div></div></div>
+  </div>
+  <div class="tab" style="border-color:#e6e6e6;color:#777;height:56px">
+    <div style="color:#111"><svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8v10H3z"/></svg></div>
+    <div><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg></div>
+    <div><svg viewBox="0 0 24 24"><path d="M6 8a6 6 0 0112 0v5l2 3H4l2-3z"/></svg></div>
+    <div><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></div>
+  </div>
+  <div class="home" style="background:#ccc"></div>
+</div>
+<p class="note">X's own bottom bar stays, minus Grok and Communities. The small badge shows the platform and the hidden count. Tap it to switch platform, hold it for filters. Nothing else is native.</p>
+</div>
+
+<div class="mock">
+<h4>B <span>Filters as a half sheet over the page. Changes apply live underneath.</span></h4>
+<div class="phone" style="background:#fff;color:#111">
+  <div class="sb"><span>9:41</span><span>●●● ⌇</span></div>
+  <div class="web">
+    <div style="opacity:.35">
+    <div class="x-tabs" style="border-color:#e6e6e6"><div class="on">Following</div></div>
+    <div class="x-post" style="border-color:#eee"><i style="background:#c9c9c9"></i><div class="x-body"><b>Leeds United</b> <span class="h">@LUFC · 2h</span><br>Full time. 2-0. Job done at Elland Road.</div></div>
+    <div class="x-post" style="border-color:#eee"><i style="background:#8bb"></i><div class="x-body"><b>Simon Willison</b> <span class="h">@simonw · 3h</span><br>New post: things I learned running a small SQLite-backed app.</div></div>
+    </div>
+    <div class="set" style="position:absolute;left:0;right:0;bottom:0;height:390px;background:#f6f3ec;border-top:1px solid #ddd;border-radius:14px 14px 0 0">
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 14px 4px;font-weight:700;font-size:14px">X filters <span style="font-weight:400;font-size:11px;color:#777">Instagram ›</span></div>
+      <div class="row" style="border-color:#e3dfd6"><span>Following only</span><i class="sw on" style="background:#b5461f"></i></div>
+      <div class="row" style="border-color:#e3dfd6"><span>Ads and promoted <small>2 hidden</small></span><i class="sw on" style="background:#b5461f"></i></div>
+      <div class="row" style="border-color:#e3dfd6"><span>Trending, Who to follow <small>4 hidden</small></span><i class="sw on" style="background:#b5461f"></i></div>
+      <div class="row" style="border-color:#e3dfd6"><span>Grok</span><i class="sw on" style="background:#b5461f"></i></div>
+      <div class="row" style="border-color:#e3dfd6"><span>@grok, mention-only, link-only <small>1 hidden</small></span><i class="sw on" style="background:#b5461f"></i></div>
+      <div class="row" style="border-color:#e3dfd6"><span>Reposts</span><i class="sw off" style="background:#cfc9bd"></i></div>
+      <div class="row" style="border-color:#e3dfd6"><span>Block button</span><i class="sw on" style="background:#b5461f"></i></div>
+      <div class="row" style="border-color:#e3dfd6"><span>Audit mode</span><i class="sw off" style="background:#cfc9bd"></i></div>
+      <div class="row" style="border:0"><span style="color:#b5461f">All filters, tools, export ›</span></div>
+    </div>
+  </div>
+  <div class="tab" style="border-color:#e6e6e6;color:#777;height:56px"></div>
+  <div class="home" style="background:#ccc"></div>
+</div>
+<p class="note">The sheet shows the current platform's top filters and links through to the full list. Good for checking a filter without leaving the page.</p>
+</div>
+
+<!-- C -->
+<div class="mock">
+<h4>C <span>Launcher. A native home screen, then each platform full screen. Dark with teal.</span></h4>
+<div class="phone" style="background:#0b1416;color:#e6f0ee">
+  <div class="sb"><span>9:41</span><span>●●● ⌇</span></div>
+  <div class="web set" style="font-size:13px">
+    <div class="ig-head" style="font-size:20px;padding-top:14px">SocialApp</div>
+    <div class="row" style="border-color:#16262a;padding:14px"><span style="display:flex;gap:12px;align-items:center"><svg viewBox="0 0 24 24" style="width:26px;height:26px;fill:none;stroke:#2fbf9f;stroke-width:1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/></svg><span><b>Instagram</b><small>Following feed · 26 hidden today · 2 unread DMs</small></span></span><span style="color:#2fbf9f">Open ›</span></div>
+    <div class="row" style="border-color:#16262a;padding:14px"><span style="display:flex;gap:12px;align-items:center"><svg viewBox="0 0 24 24" style="width:26px;height:26px;fill:none;stroke:#2fbf9f;stroke-width:1.8"><path d="M4 4l16 16M20 4L4 20"/></svg><span><b>X</b><small>Following · 41 hidden today · blocked 2</small></span></span><span style="color:#2fbf9f">Open ›</span></div>
+    <div class="row" style="border-color:#16262a;padding:14px;opacity:.45"><span style="display:flex;gap:12px;align-items:center"><svg viewBox="0 0 24 24" style="width:26px;height:26px;fill:none;stroke:#2fbf9f;stroke-width:1.8"><path d="M4 6h16v12H4z"/><path d="M10 9l5 3-5 3z"/></svg><span><b>YouTube</b><small>Later</small></span></span></div>
+    <div class="sec" style="color:#5f7d78;padding-top:22px">Quick actions</div>
+    <div class="row" style="border-color:#16262a"><span>Instagram DMs</span><span style="color:#5f7d78">›</span></div>
+    <div class="row" style="border-color:#16262a"><span>X notifications</span><span style="color:#5f7d78">›</span></div>
+    <div class="row" style="border-color:#16262a"><span>Post a photo</span><span style="color:#5f7d78">›</span></div>
+    <div class="sec" style="color:#5f7d78;padding-top:22px">This week</div>
+    <div class="row" style="border:0"><span>Hidden: 412 posts, 38 ads, 9 Reels carousels<small>Rules updated 2 days ago · v0.1.0</small></span></div>
+  </div>
+  <div class="tab" style="border-color:#16262a;color:#5f7d78">
+    <div style="color:#e6f0ee"><svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8v10H3z"/></svg>Home</div>
+    <div><svg viewBox="0 0 24 24"><path d="M3 5h18l-7 8v6l-4-2v-4z"/></svg>Filters</div>
+    <div><svg viewBox="0 0 24 24"><path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>Audit</div>
+  </div>
+  <div class="home" style="background:#1e3236"></div>
+</div>
+<p class="note">A deliberate pause before opening a feed. Quick actions deep-link straight to DMs or notifications so you can do the thing you came for. Stats come from the rules' hidden counts.</p>
+</div>
+
+<div class="mock">
+<h4>C <span>Audit mode inside Instagram. Nothing hidden, matches dimmed and labelled.</span></h4>
+<div class="phone" style="background:#000;color:#f5f5f5">
+  <div class="sb"><span>9:41</span><span>●●● ⌇</span></div>
+  <div class="web">
+    <div class="ig-head" style="font-size:13px"><span style="color:#2fbf9f">‹ Home</span> <span style="color:#f4212e;font-size:11px">AUDIT ON</span></div>
+    <div class="post audit" data-why="suggested post">
+      <div class="ph"><i style="background:#555"></i>fitness.daily <small>Suggested</small></div>
+      <div class="pic" style="background:linear-gradient(135deg,#5a2d2d,#2d1414)"></div>
+      <div class="cap"><b>fitness.daily</b> 5 exercises you're doing wrong</div>
+    </div>
+    <div class="post">
+      <div class="ph"><i style="background:#6a4"></i>ellie <small>5h</small></div>
+      <div class="pic" style="background:linear-gradient(160deg,#2e6b4f,#12301f)"></div>
+      <div class="acts"><span>♡ 84</span><span>◯ 6</span><span>➤</span></div>
+      <div class="cap"><b>ellie</b> Roundhay in the sun</div>
+    </div>
+    <div class="post audit" data-why="ad">
+      <div class="ph"><i style="background:#446"></i>temu <small>Sponsored</small></div>
+      <div class="pic" style="background:linear-gradient(135deg,#333,#111);height:80px"></div>
+    </div>
+  </div>
+  <div class="tab" style="border-color:#222;color:#888">
+    <div style="color:#fff"><svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8v10H3z"/></svg></div>
+    <div><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg></div>
+    <div><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M12 8v8M8 12h8"/></svg></div>
+    <div><svg viewBox="0 0 24 24"><path d="M12 21s-7-4.5-7-10a4 4 0 017-2 4 4 0 017 2c0 5.5-7 10-7 10z"/></svg></div>
+    <div><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0116 0"/></svg></div>
+  </div>
+  <div class="home" style="background:#333"></div>
+</div>
+<p class="note">Same CSS as the extension's audit mode. This is how you tell me a filter is wrong: screenshot, and the label says which rule fired.</p>
+</div>
+
+</div>
+
+<h2>7. Build plan</h2>
+<table>
+<tr><th>Phase</th><th>What ships</th><th>Done when</th></tr>
+<tr><td>0. Skeleton</td><td>Repo, XcodeGen project, sim and TestFlight scripts, shell with two WebViews, Mobile Safari user agent, persistent login, external links policy, error state</td><td>You log in to both sites once on TestFlight and stay logged in</td></tr>
+<tr><td>1. X</td><td>TwitterCleanser rules ported with mobile selectors, native filters screen with the same defaults, block and mute buttons, audit mode, hidden counts</td><td>Following-only home with no ads, trends, Grok or suggestions. You confirm with screenshots</td></tr>
+<tr><td>2. Instagram</td><td>Instagram rules from section 4, native route blocking, "open in app" nags gone, filters screen gains the Instagram group</td><td>Home feed is followed accounts only, no Reels, no Explore, DMs and posting work</td></tr>
+<tr><td>3. Polish</td><td>Import and export, block log, beta filter section, rule hot-reload (section 8), first pass at the launcher stats if chosen</td><td>Filter fixes ship without a TestFlight build</td></tr>
+<tr><td>Later</td><td>YouTube, Reddit, Threads as new rule folders. Quiet hours. Shortcuts and widgets that deep-link to DMs</td><td></td></tr>
+</table>
+<p>Phase 0 and 1 together are about a day of agent work, most of it the mobile selector pass. Phase 2 is a second day. I cannot log in to either site, so as with the extension you are the tester and screenshots close each phase.</p>
+
+<h2>8. Ideas worth a decision</h2>
+<ul>
+<li><b>Rules over the air.</b> Bundle the rules in the app, but also fetch <code>rules/x/content.js</code> and friends from the repo's main branch on launch and cache them. A selector fix is then a git push, not a TestFlight build and ten minutes of processing. The bundled copy is the fallback if the fetch fails.</li>
+<li><b>One rule source with TwitterCleanser.</b> The extension's <code>content.js</code> and <code>cleanser.css</code> could move into this repo and the extension could load them from here, with a thin adapter for storage. One fix, both places. The cost is coupling two projects and the mobile layout still needs its own selectors. The safe start is to copy the logic in and unify later if the drift hurts.</li>
+<li><b>Deep-link quick actions.</b> Home screen quick actions and a widget that open straight to Instagram DMs or X notifications, so the feed is opt-in rather than the default landing.</li>
+<li><b>DM-only mode with a schedule.</b> Feed hidden during work hours, back in the evening. Cheap to add once flags are native.</li>
+<li><b>Hidden counters.</b> Free, since the rules already count marks. A small "412 hidden this week" line is a good reminder of why the app exists.</li>
+<li><b>Post-level swipe to block.</b> The extension's ⃠ button already works on mobile; a swipe gesture on the native side could trigger the same API call with an undo toast.</li>
+</ul>
+
+<h2>9. Facts checked</h2>
+<ul>
+<li>Xcode 26.6 and XcodeGen 2.46 are installed on the Mac mini. iPhone 17 Pro simulators exist, including the one CellSignal's <code>sim.sh</code> uses.</li>
+<li>CellSignal targets iOS 18, D4N Travel iOS 17. Both are iPhone only, bundle prefix <code>uk.d4n</code>, team <code>FFT4Y887VQ</code>, TestFlight via the App Store Connect key.</li>
+<li>D4N Travel's <code>WebTab.swift</code> already covers WKWebView ownership, user agent token, external link policy, script message bridging and error states.</li>
+<li>Glance (open source Swift wrapper) documents the Instagram selectors, the Mobile Safari user agent suffix, and a native URL blocklist. It has no licence file, so the approach is borrowed and the code is written fresh.</li>
+<li>Instagram and X mobile web both work logged in inside WKWebView with a persistent data store. Notifications do not.</li>
+</ul>
+
+</main>
+</body>
+</html>
