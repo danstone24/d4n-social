@@ -12,9 +12,11 @@ D4N Social / `uk.d4n.social` / `danstone24/d4n-social`.
   no build is needed. Tell Dan the new rules version and that a relaunch (or
   Filters > Check for rule updates) picks it up.
 - **Swift changes**: bump `MARKETING_VERSION` in `ios/project.yml` (patch for
-  fixes, minor for features), commit, push, and ship through
-  `ios/scripts/testflight.sh` (needs `ASC_KEY_ID` and `ASC_ISSUER_ID`, which
-  Dan runs in his own terminal). State the version in the summary.
+  fixes, minor for features), commit, push, and ship by running
+  `ios/scripts/testflight.sh` yourself. It sources the App Store Connect key
+  id and issuer id from the gitignored `.env` in the repo root; Dan does not
+  want to run uploads by hand. State the version and build number in the
+  summary. The app record (uk.d4n.social) exists in App Store Connect.
 
 ## Keep in sync
 

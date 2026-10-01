@@ -2,14 +2,17 @@
 # Archive, sign (cloud-managed via the App Store Connect API key) and upload
 # to TestFlight, all from the command line. No Xcode GUI or Apple ID login.
 #
-#   ASC_KEY_ID=… ASC_ISSUER_ID=… ios/scripts/testflight.sh [build-number]
+#   ios/scripts/testflight.sh [build-number]
 #
+# ASC_KEY_ID and ASC_ISSUER_ID come from the repo's gitignored .env (or the
+# environment).
 # The build number defaults to the current UTC minute so every upload is
 # unique; MARKETING_VERSION lives in project.yml. The app record (bundle id
 # uk.d4n.social) must already exist in App Store Connect.
 set -eu
 cd "$(dirname "$0")/.."
 export DEVELOPER_DIR="${DEVELOPER_DIR:-/Applications/Xcode.app/Contents/Developer}"
+[ -f ../.env ] && . ../.env
 KEY_ID="${ASC_KEY_ID:?set ASC_KEY_ID}"
 ISSUER="${ASC_ISSUER_ID:?set ASC_ISSUER_ID}"
 KEY_PATH="${ASC_KEY_PATH:-$HOME/.appstoreconnect/private_keys/AuthKey_$KEY_ID.p8}"

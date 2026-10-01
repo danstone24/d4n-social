@@ -103,11 +103,13 @@ xcodebuild -project D4NSocial.xcodeproj -scheme D4NSocial \
 ## Ship to TestFlight
 
 ```sh
-ASC_KEY_ID=… ASC_ISSUER_ID=… ios/scripts/testflight.sh
+ios/scripts/testflight.sh
 ```
 
-Needs the `.p8` at `~/.appstoreconnect/private_keys/AuthKey_<KEY_ID>.p8`
-and an app record for `uk.d4n.social` in App Store Connect. Bump
+Reads `ASC_KEY_ID` and `ASC_ISSUER_ID` from the gitignored `.env` in the
+repo root, needs the `.p8` at
+`~/.appstoreconnect/private_keys/AuthKey_<KEY_ID>.p8`, and an app record for
+`uk.d4n.social` in App Store Connect. Bump
 `MARKETING_VERSION` in `project.yml` for a new version; the build number is
 stamped from the clock.
 
